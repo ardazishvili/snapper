@@ -2,5 +2,5 @@
 
 int main()
 {
-	std::cout <<"dsdf" << std::endl;
+	std::cout <<"Update of sample recipe" << std::endl;
 }
