@@ -2,5 +2,5 @@
 
 int main()
 {
-	std::cout <<"Update of sample recipe" << std::endl;
+	std::cout <<"Update of sample recipe V2" << std::endl;
 }
