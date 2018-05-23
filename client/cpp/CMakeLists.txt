@@ -1,0 +1,16 @@
+cmake_minimum_required( VERSION 3.9.6 )
+project( SNAPPER )
+
+execute_process(COMMAND which grpc_cpp_plugin OUTPUT_VARIABLE FOO)
+string(STRIP ${FOO} FOO)
+
+execute_process(COMMAND protoc -I${PROJECT_SOURCE_DIR} --grpc_out=. --plugin=protoc-gen-grpc=${FOO} snapper.proto)
+execute_process(COMMAND protoc -I${PROJECT_SOURCE_DIR} --cpp_out=. snapper.proto)
+
+include_directories( SYSTEM grpc++ )
+include_directories( ${CMAKE_CURRENT_BINARY_DIR} )
+
+link_libraries( grpc++_unsecure grpc protobuf )
+
+add_executable( snapper-client snapper-client.cpp snapper.grpc.pb.cc snapper.pb.cc )
+install( TARGETS snapper-client DESTINATION bin)
