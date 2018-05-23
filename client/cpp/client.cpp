@@ -50,7 +50,7 @@ private:
 
 int main(int argc, char** argv) {
     SnapperClient snapperClient(
-                grpc::CreateChannel("192.168.1.6:50051",
+                grpc::CreateChannel("192.168.1.21:50051",
                                     grpc::InsecureChannelCredentials()));
     Resolution resolution;
     resolution.set_width(320);
