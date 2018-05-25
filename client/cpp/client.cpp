@@ -47,7 +47,6 @@ int main(int argc, char** argv) {
     resolution.set_width(320);
     resolution.set_height(240);
     snapperClient.Snapshot(resolution);
-//    std::cout << "Result of snaphot: " << reply << std::endl;
 
     return 0;
 }

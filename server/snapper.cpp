@@ -16,19 +16,6 @@ using snapper::Resolution;
 using snapper::Snapper;
 using snapper::Chunk;
 
-//class SnapperSnapshotImpl final : public Snapper::Service
-//{
-//  Status Snapshot(ServerContext* context,
-//                  const Resolution* resolution,
-//                  Reply* reply) override
-//  {
-//    std::cout << "resolution is: " << resolution->width() << "x" <<
-//                 resolution->height() <<std::endl;
-//    system("v4l2-ctl --stream-mmap=3 --stream-count=1 --stream-to=somefile.jpg");
-//    return Status::OK;
-//  }
-//};
-
 
 
 class SnapperSnapshotImpl final : public Snapper::Service
