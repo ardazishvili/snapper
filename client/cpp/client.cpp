@@ -1,6 +1,7 @@
 #include <iostream>
 #include <memory>
 #include <string>
+#include <fstream>
 
 #include <grpc++/grpc++.h>
 
@@ -30,9 +31,12 @@ public:
 
         Chunk chunk;
         std::unique_ptr< ::grpc::ClientReader< ::snapper::Chunk>> reader = _stub->Snapshot(&context, request);
-        reader->Read(&chunk);
 
-        std::cout << chunk.content() << std::endl;
+        std::ofstream outfile("somefile.jpg", std::ofstream::binary);
+        while (reader->Read(&chunk))
+        {
+            outfile << chunk.content();
+        }
     }
 
 private:
