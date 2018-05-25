@@ -23,6 +23,7 @@ class SnapperServiceImpl final : public Snapper::Service
   {
     std::cout << "resolution is: " << resolution->width() << "x" <<
                  resolution->height() <<std::endl;
+    system("v4l2-ctl --stream-mmap=3 --stream-count=1 --stream-to=somefile.jpg");
     return Status::OK;
   }
 };
