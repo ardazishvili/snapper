@@ -33,7 +33,7 @@ using snapper::Chunk;
 
 class SnapperSnapshotImpl final : public Snapper::Service
 {
-    Status Download(grpc::ServerContext *context,
+    Status Snapshot(grpc::ServerContext *context,
                     const snapper::Resolution *request,
                     ::grpc::ServerWriter<Chunk> *writer) override
     {
