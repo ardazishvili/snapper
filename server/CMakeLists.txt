@@ -4,8 +4,8 @@ project( SNAPPER )
 execute_process(COMMAND which grpc_cpp_plugin OUTPUT_VARIABLE GRPC_CPP_PLUGIN_DIR)
 string(STRIP ${GRPC_CPP_PLUGIN_DIR} GRPC_CPP_PLUGIN_DIR)
 
-execute_process(COMMAND protoc -I${PROJECT_SOURCE_DIR} --grpc_out=. --plugin=protoc-gen-grpc=${GRPC_CPP_PLUGIN_DIR} --proto_path=../../common snapper.proto)
-execute_process(COMMAND protoc -I${PROJECT_SOURCE_DIR} --cpp_out=. --proto_path=../../common snapper.proto)
+execute_process(COMMAND protoc -I${PROJECT_SOURCE_DIR} --grpc_out=. --plugin=protoc-gen-grpc=${GRPC_CPP_PLUGIN_DIR} snapper.proto)
+execute_process(COMMAND protoc -I${PROJECT_SOURCE_DIR} --cpp_out=. snapper.proto)
 
 include_directories( SYSTEM grpc++ )
 include_directories( ${CMAKE_CURRENT_BINARY_DIR} )
