@@ -12,6 +12,7 @@ using grpc::Status;
 using snapper::Resolution;
 using snapper::Reply;
 using snapper::Snapper;
+using snapper::Chunk;
 
 class SnapperClient {
 public:
@@ -44,6 +45,25 @@ public:
         }
     }
 
+
+
+    void Download(const Resolution& resolution)
+    {
+        Resolution request;
+        request.set_width(resolution.width());
+        request.set_height(resolution.height());
+
+        Reply reply;
+
+        ClientContext context;
+
+        Chunk chunk;
+        std::unique_ptr< ::grpc::ClientReader< ::snapper::Chunk>> reader = _stub->Download(&context, request);
+        reader->Read(&chunk);
+
+        std::cout << chunk.content() << std::endl;
+    }
+
 private:
     std::unique_ptr<Snapper::Stub> _stub;
 };
@@ -55,8 +75,8 @@ int main(int argc, char** argv) {
     Resolution resolution;
     resolution.set_width(320);
     resolution.set_height(240);
-    std::string reply = snapperClient.Snapshot(resolution);
-    std::cout << "Result of snaphot: " << reply << std::endl;
+    snapperClient.Download(resolution);
+//    std::cout << "Result of snaphot: " << reply << std::endl;
 
     return 0;
 }
