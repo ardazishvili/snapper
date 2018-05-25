@@ -27,8 +27,6 @@ class SnapperSnapshotImpl final : public Snapper::Service
                     ::grpc::ServerWriter<Chunk> *writer) override
     {
         Chunk chunk;
-//        chunk.set_content(std::string("this is test content V2").c_str());
-//        writer->Write(chunk);
 
         std::ifstream file("/home/root/somefile.jpg", std::ifstream::binary);
         char buffer[128];
@@ -46,8 +44,6 @@ class SnapperSnapshotImpl final : public Snapper::Service
 
             std::cout << dataSize << std::endl;
         }
-//        file.read(buffer, dataSize);
-//        writer->Write(chunk);
 
         return Status::OK;
     }
