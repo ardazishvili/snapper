@@ -6,22 +6,33 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.os.AsyncTask;
 import android.app.Activity;
+import android.os.Environment;
+import android.Manifest;
+import android.support.v4.content.ContextCompat;
+import android.content.pm.PackageManager;
+import android.support.v4.app.ActivityCompat;
 
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.lang.ref.WeakReference;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
+import java.io.File;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import io.grpc.examples.snapper.Chunk;
 import io.grpc.examples.snapper.SnapperGrpc;
 import io.grpc.examples.snapper.Resolution;
-import io.grpc.examples.snapper.Reply;
 
 public class SnapperActivity extends AppCompatActivity {
+    private static final int PERMISSION_REQUEST_STORAGE = 0;
+
     private Button sendButton;
     private TextView resultText;
 
@@ -55,8 +66,32 @@ public class SnapperActivity extends AppCompatActivity {
                 channel = ManagedChannelBuilder.forAddress("192.168.1.21", 50051).usePlaintext(true).build();
                 SnapperGrpc.SnapperBlockingStub stub = SnapperGrpc.newBlockingStub(channel);
                 Resolution resolution = Resolution.newBuilder().setWidth(320).setHeight(240).build();
-                Reply reply = stub.snapshot(resolution);
-                return reply.getError().toString();
+
+                Iterator<Chunk> chunks;
+                chunks = stub.snapshot(resolution);
+
+//              obtain permissions
+                if (ContextCompat.checkSelfPermission(activityReference.get(), Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
+                        PackageManager.PERMISSION_GRANTED) {
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(activityReference.get(),
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    } else {
+                        ActivityCompat.requestPermissions(activityReference.get(),
+                                new String[]{ Manifest.permission.WRITE_EXTERNAL_STORAGE },
+                                PERMISSION_REQUEST_STORAGE);
+                    }
+                } else {
+                }
+
+                File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "/" + "somefile.jpg");
+                OutputStream outputStream = new FileOutputStream(file);
+                while (chunks.hasNext())
+                {
+                    Chunk c = chunks.next();
+                    outputStream.write(c.getContent().toByteArray());
+                }
+
+                return "Done";
             } catch (Exception e) {
                 StringWriter sw = new StringWriter();
                 PrintWriter pw = new PrintWriter(sw);
