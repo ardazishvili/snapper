@@ -20,17 +20,22 @@
         android:onClick="sendMessage"
         android:text="Snapshot" />
 
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <TextView
         android:id="@+id/grpc_response_text"
         android:layout_width="match_parent"
-        android:layout_height="244dp"
+        android:layout_height="204dp"
         android:scrollbars="vertical"
         android:textSize="16sp" />
 
     <ImageView
         android:id="@+id/grpc_response_image"
         android:layout_width="match_parent"
-        android:layout_height="219dp"
+        android:layout_height="233dp"
         android:src="@android:color/background_light" />
 
 </LinearLayout>

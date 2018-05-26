@@ -1,8 +1,10 @@
 package com.example.roman.snapper;
 
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.os.AsyncTask;
@@ -37,6 +39,7 @@ public class SnapperActivity extends AppCompatActivity {
 
     private Button sendButton;
     private TextView resultText;
+    private Spinner spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +47,24 @@ public class SnapperActivity extends AppCompatActivity {
         setContentView(R.layout.activity_snapper);
         sendButton = (Button) findViewById(R.id.send_button);
         resultText = (TextView) findViewById(R.id.grpc_response_text);
+
+        String[] resolutions = new String[] {
+                "320 × 240",
+                "640 x 480",
+                "960 x 720",
+                "1024 x 768",
+                "1600 x 1200",
+                "1920 x 1440",
+                "2560 x 1920",
+                "2800 x 2100",
+                "3200 x 2400",
+                "3280 × 2464"};
+        spinner = (Spinner) findViewById(R.id.spinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, resolutions);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
         resultText.setMovementMethod(new ScrollingMovementMethod());
     }
 
