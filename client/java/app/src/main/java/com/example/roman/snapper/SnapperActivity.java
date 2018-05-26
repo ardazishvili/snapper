@@ -2,6 +2,7 @@ package com.example.roman.snapper;
 
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.ImageView;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.os.AsyncTask;
@@ -11,6 +12,7 @@ import android.Manifest;
 import android.support.v4.content.ContextCompat;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
+import android.graphics.BitmapFactory;
 
 import java.io.FileOutputStream;
 import java.io.OutputStream;
@@ -83,8 +85,8 @@ public class SnapperActivity extends AppCompatActivity {
                 } else {
                 }
 
-                File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "/" + "somefile.jpg");
-                OutputStream outputStream = new FileOutputStream(file);
+                File downloadFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "/" + "somefile.jpg");
+                OutputStream outputStream = new FileOutputStream(downloadFile);
                 while (chunks.hasNext())
                 {
                     Chunk c = chunks.next();
@@ -116,6 +118,11 @@ public class SnapperActivity extends AppCompatActivity {
             Button sendButton = (Button) activity.findViewById(R.id.send_button);
             resultText.setText(result);
             sendButton.setEnabled(true);
+
+            ImageView image = (ImageView) activityReference.get().findViewById(R.id.grpc_response_image);
+
+            String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/somefile.jpg";
+            image.setImageBitmap(BitmapFactory.decodeFile(path));
         }
     }
 }
