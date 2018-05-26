@@ -2,6 +2,10 @@ syntax = "proto3";
 
 package snapper;
 
+option java_multiple_files = true;
+option java_package = "io.grpc.examples.snapper";
+option java_outer_classname = "SnapperProto";
+
 service Snapper
 {
   rpc Snapshot (Resolution) returns (stream Chunk) {}
