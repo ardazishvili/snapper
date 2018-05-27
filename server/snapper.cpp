@@ -16,11 +16,12 @@ using grpc::Status;
 using snapper::Resolution;
 using snapper::Snapper;
 using snapper::Chunk;
+using snapper::Reply;
 //system("v4l2-ctl --stream-mmap=3 --stream-count=1 --stream-to=somefile.jpg");
 
 
 
-class SnapperSnapshotImpl final : public Snapper::Service
+class SnapperImpl final : public Snapper::Service
 {
     Status Snapshot(grpc::ServerContext *context,
                     const snapper::Resolution *request,
@@ -37,18 +38,25 @@ class SnapperSnapshotImpl final : public Snapper::Service
 
             file.read(buffer, 128);
             dataSize = file.gcount();
-            std::cout << dataSize << std::endl;
 
             chunk.set_content(buffer, dataSize);
             writer->Write(chunk);
 
-            std::cout << dataSize << std::endl;
         }
 
         return Status::OK;
     }
-};
 
+
+    Status SetResolution(grpc::ServerContext *context,
+                         const snapper::Resolution *request,
+                         snapper::Reply *response) override
+    {
+        std::cout << "attempt to set resolution " << request->width() << "x" << request->height() << std::endl;
+
+        return Status::OK;
+    }
+};
 
 
 
@@ -60,11 +68,11 @@ void RunServer() {
   builder.AddListeningPort(server_address, grpc::InsecureServerCredentials());
 
 
-  SnapperSnapshotImpl snapshotService;
-  builder.RegisterService(&snapshotService);
+  SnapperImpl snapperService;
+  builder.RegisterService(&snapperService);
 
   std::unique_ptr<Server> server(builder.BuildAndStart());
-  std::cout << "Server listening on " << server_address << std::endl;
+  std::cout << "Server listening on1 " << server_address << std::endl;
 
   server->Wait();
 }
