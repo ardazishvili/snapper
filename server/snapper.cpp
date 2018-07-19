@@ -17,9 +17,6 @@ using snapper::Resolution;
 using snapper::Snapper;
 using snapper::Chunk;
 using snapper::Reply;
-//system("v4l2-ctl --stream-mmap=3 --stream-count=1 --stream-to=somefile.jpg");
-
-
 
 class SnapperImpl final : public Snapper::Service
 {
@@ -29,6 +26,7 @@ class SnapperImpl final : public Snapper::Service
     {
         Chunk chunk;
 
+        system("v4l2-ctl --stream-mmap=3 --stream-count=1 --stream-to=somefile.jpg");
         std::ifstream file("/home/root/somefile.jpg", std::ifstream::binary);
         char buffer[128];
 
